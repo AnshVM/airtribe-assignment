@@ -19,6 +19,7 @@ export async function courseRegistration(req, res) {
         })
 
     } catch (error) {
+        console.log(error)
         if (error.code === FOREIGN_KEY_MISSING_CODE) {
             res.status(500).json({
                 error: 'Invalid courseId'
@@ -99,29 +100,29 @@ export async function searchLeads(req, res) {
         else if (email) {
             results = await searchLeadsByField("email", email, instructorId)
         }
-        
+
         else {
             return res.status(400).json({
-                error:"Missing search field"
+                error: "Missing search field"
             })
         }
 
         return res.status(200).json(results)
 
     } catch (error) {
-        return res.status(500).json({error})
+        return res.status(500).json({ error })
     }
 
 }
 
-export async function getLeadById(req,res) {
-    try{
+export async function getLeadById(req, res) {
+    try {
         const { id } = req.params
 
-        const lead = await db.one('SELECT * FROM Leads WHERE id=$1',[id])
+        const lead = await db.one('SELECT * FROM Leads WHERE id=$1', [id])
 
         res.status(200).json(lead)
-    } catch(error) {
-        res.status(404).json({error:"Lead does not exist"})
+    } catch (error) {
+        res.status(404).json({ error: "Lead does not exist" })
     }
 }

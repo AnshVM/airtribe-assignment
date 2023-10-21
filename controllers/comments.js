@@ -23,7 +23,6 @@ export async function addComment(req, res) {
 
         const { course_instructor } = await db.one(getInstructorByLeadQuery,[leadId])
 
-
         if (!course_instructor) {
             return res.status(500).json({
                 error: "Invalid lead id"
