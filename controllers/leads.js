@@ -114,3 +114,14 @@ export async function searchLeads(req, res) {
 
 }
 
+export async function getLeadById(req,res) {
+    try{
+        const { id } = req.params
+
+        const lead = await db.one('SELECT * FROM Leads WHERE id=$1',[id])
+
+        res.status(200).json(lead)
+    } catch(error) {
+        res.status(404).json({error:"Lead does not exist"})
+    }
+}
