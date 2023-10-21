@@ -8,7 +8,13 @@ export const POST = async (path,body) => {
     const res = await axios.post(route(path),body);
     return res.data
 }
+
 export const GET = async (path) => {
     const res = await axios.get(route(path));
+    return res.data
+}
+
+export const PUT = async (path,body) => {
+    const res = await axios.put(route(path),body);
     return res.data
 }

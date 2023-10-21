@@ -52,14 +52,16 @@ const filterUndefinedValues = (obj) => {
 
 export async function updateCourse(req, res) {
     try {
-        const { id, name, max_seats, start_date } = req.body;
+        const { id, name, maxSeats, startDate } = req.body;
 
-        const definedFields = filterUndefinedKeys({ name, max_seats, start_date })
-        const definedValues = filterUndefinedValues({ name, max_seats, start_date })
+        const obj = { name, max_seats: maxSeats, start_date: startDate }
+
+        const definedFields = filterUndefinedKeys(obj)
+        const definedValues = filterUndefinedValues(obj)
 
         if (definedValues.length === 0) {
             res.status(400).json({
-                error: "No field to update"
+                error: "No update field provided"
             })
         }
 
@@ -75,19 +77,26 @@ export async function updateCourse(req, res) {
 }
 
 const getCourseByIdQuery = `
-SELECT * FROM Course
+SELECT *
+FROM Courses
 WHERE id=$1
 `
 
 export async function getCourseById(req, res) {
-    try{
+    try {
         const { id } = req.params
 
-        const course = await db.one(getCourseByIdQuery,[id])
+        const course = await db.one(getCourseByIdQuery, [id])
 
-        res.status(200).json({course})
+        res.status(200).json({
+            id: course.id,
+            name: course.name,
+            maxSeats: course.max_seats,
+            startDate: course.start_date,
+            instructorId: course.instructor_id,
+        })
 
-    } catch(error) {
-        res.status(404).json({error:"Course does not exist"})
+    } catch (error) {
+        res.status(404).json({ error: "Course does not exist" })
     }
 }
