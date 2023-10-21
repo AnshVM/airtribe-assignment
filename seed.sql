@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS Leads(
 );
 
 CREATE TABLE IF NOT EXISTS Comments(
+    id              SERIAL PRIMARY KEY,
+    comment         VARCHAR(255),
     lead_id         INT REFERENCES Leads(id),
     instructor_id   INT REFERENCES Instructors(id)
 );
