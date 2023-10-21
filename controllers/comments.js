@@ -1,5 +1,6 @@
 import * as db from '../db/db.js'
 
+// Returns the instructor_id of the course of the lead
 const getInstructorByLeadQuery = `
 SELECT instructor_id AS course_instructor 
 FROM Courses

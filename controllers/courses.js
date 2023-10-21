@@ -27,3 +27,49 @@ export async function createCourse(req, res) {
         }
     }
 }
+
+// generates a query which looks like
+// UPDATE COURSES
+// SET (field1,field2,field3) = ROW($2,$3,$4)
+// WHERE id=$1
+
+const updateCourseQuery = (fields) => `
+UPDATE Courses 
+SET (${fields.join(',')}) = ROW(${fields.map((_,index) => `$${index+2}`).join(',')})
+WHERE id=$1
+`
+const filterUndefinedKeys = (obj) => {
+    return Object.keys(obj).filter((key) => {
+        return obj[key] !== undefined
+    })
+}
+
+const filterUndefinedValues = (obj) => {
+    return Object.values(obj).filter((value) => {
+        return value !== undefined
+    })
+}
+
+export async function updateCourse(req, res) {
+    try {
+        const { id, name, max_seats, start_date } = req.body;
+
+        const definedFields = filterUndefinedKeys({ name, max_seats, start_date })
+        const definedValues = filterUndefinedValues({ name, max_seats, start_date })
+
+        if (definedValues.length === 0) {
+            res.status(400).json({
+                error: "No field to update"
+            })
+        }
+
+        const query = updateCourseQuery(definedFields)
+
+        await db.query(query, [id,...definedValues])
+
+        res.status(200).json({success:true})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error })
+    }
+}
