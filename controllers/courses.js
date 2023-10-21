@@ -92,7 +92,7 @@ export async function getCourseById(req, res) {
             id: course.id,
             name: course.name,
             maxSeats: course.max_seats,
-            startDate: course.start_date,
+            startDate: new Date(course.start_date),
             instructorId: course.instructor_id,
         })
 
