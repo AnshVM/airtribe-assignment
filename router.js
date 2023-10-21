@@ -1,5 +1,5 @@
 import Router from 'express-promise-router'
-import { createInstructor } from './controllers/instructors.js'
+import { createInstructor, getInstructorById } from './controllers/instructors.js'
 import { createCourse, updateCourse } from './controllers/courses.js'
 import { courseRegistration, searchLeads, updateLeadStatus } from './controllers/leads.js'
 import { addComment } from './controllers/comments.js'
@@ -7,6 +7,7 @@ import { addComment } from './controllers/comments.js'
 const router = new Router()
 
 router.post('/instructor',createInstructor)
+router.get('/instructor/:id',getInstructorById)
 
 router.post('/course',createCourse)
 router.put('/course',updateCourse)
