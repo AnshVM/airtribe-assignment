@@ -34,6 +34,7 @@ $ `docker exec -it airtribe psql -U postgres -c "CREATE DATABASE airtribe;"`
 ```
 In a seperate terminal run the server
 ```
+$ npm install
 $ npm run dev
 ```
 Once postgres is ready and the server is running
