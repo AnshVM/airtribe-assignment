@@ -30,7 +30,7 @@ $ docker run \
 -p 5432:5432 \ 
 postgres
 
-$ `docker exec -it airtribe psql -U postgres -c "CREATE DATABASE airtribe;"`
+$ docker exec -it airtribe psql -U postgres -c "CREATE DATABASE airtribe;"
 ```
 In a seperate terminal run the server
 ```
