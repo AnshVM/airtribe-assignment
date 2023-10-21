@@ -50,11 +50,11 @@ export async function updateLeadStatus(req, res) {
 
     try {
         // using camel case here because pg does only lowercase with aliases :(
-        const {course_instructor} = await db.one(getInstructorByLeadQuery, [leadId])
+        const { course_instructor } = await db.one(getInstructorByLeadQuery, [leadId])
 
-        if(!course_instructor) {
+        if (!course_instructor) {
             res.status(400).json({
-                error:"Invalid lead_id"
+                error: "Invalid lead_id"
             })
         }
 
@@ -70,5 +70,47 @@ export async function updateLeadStatus(req, res) {
         console.log(error)
         res.status(500).json({ error })
     }
+}
+
+
+
+async function searchLeadsByField(field, value, instructorId) {
+    const query = `
+        SELECT * FROM Leads
+        WHERE course_id IN (
+            SELECT id FROM Courses
+            WHERE instructor_id = $1
+        ) AND
+        ${field} LIKE $2
+    `
+    return (await db.query(query, [instructorId, value]))
+}
+
+export async function searchLeads(req, res) {
+    const { name, email } = req.query
+    const { instructorId } = req.body
+
+    try {
+        let results = []
+
+        if (name) {
+            results = await searchLeadsByField("name", name, instructorId)
+        }
+        else if (email) {
+            results = await searchLeadsByField("email", email, instructorId)
+        }
+        
+        else {
+            return res.status(400).json({
+                error:"Missing search field"
+            })
+        }
+
+        return res.status(200).json(results)
+
+    } catch (error) {
+        return res.status(500).json({error})
+    }
+
 }
 

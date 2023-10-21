@@ -25,3 +25,5 @@ CREATE TABLE IF NOT EXISTS Comments(
     lead_id         INT REFERENCES Leads(id),
     instructor_id   INT REFERENCES Instructors(id)
 );
+
+
