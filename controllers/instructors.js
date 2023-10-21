@@ -11,11 +11,11 @@ export async function createInstructor(req, res) {
 
     try {
         const { id } = await db.one(createInstructorQuery, [name])
-        res.status(201).json({
+        return res.status(201).json({
             id
         })
     } catch (err) {
-        res.send(500).json({
+        return res.status(500).json({
             error: err
         })
     }

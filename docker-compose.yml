@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    restart: on-failure
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      PGHOST: postgres 
+      PGPORT: 5432
+      PGDATABASE: airtribe
+      PGUSER: postgres
+      PGPASSWORD: password 
+      PORT: 8000
+    ports:
+      - "8000:8000"
+    command: npm run dev
+    volumes:
+      - .:/app/
+      - /app/node_modules
+
+  postgres:
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: airtribe
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
