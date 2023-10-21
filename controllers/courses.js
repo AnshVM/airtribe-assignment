@@ -35,7 +35,7 @@ export async function createCourse(req, res) {
 
 const updateCourseQuery = (fields) => `
 UPDATE Courses 
-SET (${fields.join(',')}) = ROW(${fields.map((_,index) => `$${index+2}`).join(',')})
+SET (${fields.join(',')}) = ROW(${fields.map((_, index) => `$${index + 2}`).join(',')})
 WHERE id=$1
 `
 const filterUndefinedKeys = (obj) => {
@@ -65,11 +65,29 @@ export async function updateCourse(req, res) {
 
         const query = updateCourseQuery(definedFields)
 
-        await db.query(query, [id,...definedValues])
+        await db.query(query, [id, ...definedValues])
 
-        res.status(200).json({success:true})
+        res.status(200).json({ success: true })
     } catch (error) {
         console.log(error)
         res.status(500).json({ error })
+    }
+}
+
+const getCourseByIdQuery = `
+SELECT * FROM Course
+WHERE id=$1
+`
+
+export async function getCourseById(req, res) {
+    try{
+        const { id } = req.params
+
+        const course = await db.one(getCourseByIdQuery,[id])
+
+        res.status(200).json({course})
+
+    } catch(error) {
+        res.status(404).json({error:"Course does not exist"})
     }
 }
