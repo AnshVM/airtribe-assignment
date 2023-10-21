@@ -1,4 +1,4 @@
-import { query } from "../db.js"
+import * as db from '../db/db.js'
 
 export async function createInstructor(req, res) {
     const { name } = req.body
@@ -10,14 +10,12 @@ export async function createInstructor(req, res) {
     `
 
     try {
-        const { id } = (await query(createInstructorQuery,[name])).rows[0]
-        res.status(200).json({
-            success:true,
+        const { id } = await db.one(createInstructorQuery,[name])
+        res.status(201).json({
             id
         })
     } catch(err) {
-        res.send(400).json({
-            success:false,
+        res.send(500).json({
             error:err
         })
     }
