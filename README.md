@@ -6,39 +6,15 @@ $ git clone https://github.com/AnshVM/airtribe-assignment.git
 $ cd airtribe-assignment
 $ docker-compose up
 ```
-This will start the server on ```http://localhost:8000/``` 
+This will start the server on ```http://localhost:8000/``` and postgres on port ```5432```.
 
 ### Running tests
-For running tests you'll need to setup postgres first
-
-Create a .env file in the project root directory and paste the below contents
+Once the server is running
+Make sure to install npm packages first
 ```
-PGHOST=localhost
-PGPORT=5432
-PGDATABASE=airtribe
-PGUSER=postgres
-PGPASSWORD=password
+$ npm run install
 ```
-Next setup the postgres image
-```
-$ docker pull postgres
-
-$ docker run \ 
---name aitribe \ 
---e POSTGRES_PASSWORD=password \ 
--d \ 
--p 5432:5432 \ 
-postgres
-
-$ docker exec -it airtribe psql -U postgres -c "CREATE DATABASE airtribe;"
-```
-In a seperate terminal run the server
-```
-$ npm install
-$ npm run dev
-```
-Once postgres is ready and the server is running
-To run tests
+Then to run tests
 ```
 $ npm run test
 ```
