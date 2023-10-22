@@ -12,7 +12,7 @@ This will start the server on ```http://localhost:8000/``` and postgres on port 
 Once the server is running
 Make sure to install npm packages first
 ```
-$ npm run install
+$ npm install
 ```
 Then to run tests
 ```
